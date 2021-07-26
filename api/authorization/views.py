@@ -1,7 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponseRedirect
 from .serializers import UserSerializer, UserDataSerializer, PasswordSerializer
 from .models import UserData
 
