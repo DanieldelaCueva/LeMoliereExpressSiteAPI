@@ -12,7 +12,6 @@ import os
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def articleList(request):
     articles = Article.objects.all()
     serializer = ArticleSerializer(articles, many=True)
