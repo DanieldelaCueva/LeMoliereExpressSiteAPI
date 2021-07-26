@@ -2,14 +2,17 @@ from .serializers import ArticleSerializer
 from .models import Article
 from django.contrib.auth.decorators import login_required
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 import wget
 import os
 # Create your views here.
 
+
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def articleList(request):
     articles = Article.objects.all()
     serializer = ArticleSerializer(articles, many=True)
@@ -22,6 +25,7 @@ def articleDetail(request, pk):
     return Response(serializer.data)
 
 @login_required
+@permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def articleCreate(request):
     serializer = ArticleSerializer(data=request.data)
@@ -42,6 +46,7 @@ def articleCreate(request):
         return Response("Not registered")
 
 @login_required
+@permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def articleUpdate(request, pk):
     articles = Article.objects.get(id=pk)
@@ -53,6 +58,7 @@ def articleUpdate(request, pk):
         return Response("Not registered")
 
 @login_required
+@permission_classes([IsAuthenticated])
 @api_view(['DELETE'])
 def articleDelete(request, pk):
     articles = Article.objects.get(id=pk)
@@ -61,6 +67,7 @@ def articleDelete(request, pk):
 
 
 @login_required
+@permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def articleValidate(request, pk):
     article = Article.objects.get(id=pk)
@@ -72,6 +79,7 @@ def articleValidate(request, pk):
     return Response(serializer2.data)
 
 @login_required
+@permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def articleInvalidate(request, pk):
     article = Article.objects.get(id=pk)

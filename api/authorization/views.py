@@ -1,14 +1,17 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from django.http import HttpResponseRedirect
 from .serializers import UserSerializer, UserDataSerializer, PasswordSerializer
 from .models import UserData
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
+
 
 @api_view(['POST'])
 def userLogin(request):
@@ -20,6 +23,9 @@ def userLogin(request):
 
     if user:
         if user.is_active:
+            # userInstance = User.objects.get(username=username)
+            # token = Token.objects.get_or_create(user=userInstance)
+            # serializer = TokenSerializer(token[0], many=False)
             login(request,user)
             return Response('Logged in successfully')
         else:
@@ -27,11 +33,13 @@ def userLogin(request):
     else:
         return Response('Wrong cretentials')
 
-@login_required
+@permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def userLogout(request):
     logout(request)
-    return Response('Logged out successfully')
+    response = Response('Logged out successfully')
+    response.delete_cookie(key='csrftoken', domain='127.0.0.1')
+    return response
 
 @api_view(['GET'])
 def userList(request):
@@ -59,19 +67,28 @@ def userDetail(request, username):
     userSerializer_data['age_class'] = userDataSerializer.data['age_class']
     return Response(userSerializer_data)
 
-@login_required
+# @login_required
+@permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def userChangePassword(request, username):
     user = User.objects.get(username=username)
+    idSerializer = UserSerializer(user, many=False)
+    id = idSerializer.data['id']
     
     password = request.data['password']
     securePassword = make_password(password)
-    request.data['password'] = securePassword
     serializer = PasswordSerializer(instance=user, data=request.data)
+
+    token_key = Token.objects.get(user=id)
+
     if serializer.is_valid():
-        if request.session['_auth_user_id'] == str(serializer.data['id']):
-            serializer.save() 
+        serializer.validated_data['password'] = securePassword
+        
+        if str(token_key) == request.META.get('HTTP_AUTHORIZATION').split()[1]:
+            serializer.save()
+            return Response("Password reset successfully for user " + str(serializer.data['username']))
         else:
-            return Response("can't change others users password")
+            return Response("Can't change others users password")
+
     else:
         return Response("Invalid data")

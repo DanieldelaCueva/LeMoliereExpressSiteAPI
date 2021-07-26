@@ -9,6 +9,5 @@ class UserData(models.Model):
 
     group = models.ForeignKey(Group, to_field="name", default="Staff", on_delete=models.CASCADE)
     age_class = models.CharField(max_length=264)
-
     class Meta:
         verbose_name_plural = "User Data"
