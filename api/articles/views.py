@@ -24,9 +24,9 @@ def articleDetail(request, pk):
     serializer = ArticleSerializer(articles, many=False)
     return Response(serializer.data)
 
-@login_required
-@permission_classes([IsAuthenticated])
+
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def articleCreate(request):
     serializer = ArticleSerializer(data=request.data)
     if serializer.is_valid():
@@ -45,9 +45,9 @@ def articleCreate(request):
     else:
         return Response("Not registered")
 
-@login_required
-@permission_classes([IsAuthenticated])
+
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def articleUpdate(request, pk):
     articles = Article.objects.get(id=pk)
     serializer = ArticleSerializer(instance=articles, data=request.data)
@@ -57,18 +57,17 @@ def articleUpdate(request, pk):
     else:
         return Response("Not registered")
 
-@login_required
-@permission_classes([IsAuthenticated])
+
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def articleDelete(request, pk):
     articles = Article.objects.get(id=pk)
     articles.delete()
     return Response('Successfully deleted')
 
 
-@login_required
-@permission_classes([IsAuthenticated])
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def articleValidate(request, pk):
     article = Article.objects.get(id=pk)
     serializer = ArticleSerializer(article, many=False)
@@ -78,9 +77,9 @@ def articleValidate(request, pk):
         serializer2.save()
     return Response(serializer2.data)
 
-@login_required
-@permission_classes([IsAuthenticated])
+
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def articleInvalidate(request, pk):
     article = Article.objects.get(id=pk)
     serializer = ArticleSerializer(article, many=False)

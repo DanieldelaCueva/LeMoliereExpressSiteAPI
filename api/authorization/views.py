@@ -12,34 +12,14 @@ from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
-
-@api_view(['POST'])
-def userLogin(request):
-
-    username = request.data['username']
-    password = request.data['password']
-
-    user = authenticate(username=username, password=password)
-
-    if user:
-        if user.is_active:
-            # userInstance = User.objects.get(username=username)
-            # token = Token.objects.get_or_create(user=userInstance)
-            # serializer = TokenSerializer(token[0], many=False)
-            login(request,user)
-            return Response('Logged in successfully')
-        else:
-            return Response('account not active')
-    else:
-        return Response('Wrong cretentials')
-
+@api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
-@api_view(['GET'])
 def userLogout(request):
-    logout(request)
-    response = Response('Logged out successfully')
-    response.delete_cookie(key='csrftoken', domain='127.0.0.1')
-    return response
+    key = request.META.get('HTTP_AUTHORIZATION').split()[1]
+    token = Token.objects.get(key=key)
+    token.delete()
+    return Response("Logged out successfully")
+    
 
 @api_view(['GET'])
 def userList(request):
@@ -67,9 +47,9 @@ def userDetail(request, username):
     userSerializer_data['age_class'] = userDataSerializer.data['age_class']
     return Response(userSerializer_data)
 
-# @login_required
-@permission_classes([IsAuthenticated])
+
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def userChangePassword(request, username):
     user = User.objects.get(username=username)
     idSerializer = UserSerializer(user, many=False)
