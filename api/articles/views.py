@@ -30,14 +30,14 @@ def articleCreate(request):
     serializer = ArticleSerializer(data=request.data)
     if serializer.is_valid():
 
-        url = serializer.validated_data['img_url']
-        img_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/media'
-        wget.download(url,out = img_path)
-        system_path = os.path.join(img_path, os.path.split(url)[1])
-        init_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        relative_path = os.path.relpath(system_path, init_path)
+        # url = serializer.validated_data['img_rel_url']
+        # img_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/media'
+        # wget.download(url,out = img_path)
+        # system_path = os.path.join(img_path, os.path.split(url)[1])
+        # init_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        # relative_path = os.path.relpath(system_path, init_path)
 
-        serializer.validated_data['img_url'] = relative_path
+        # serializer.validated_data['img_rel_url'] = relative_path
 
         serializer.save()
         return Response(serializer.data)

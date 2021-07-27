@@ -8,7 +8,7 @@ class Article(models.Model):
     title = models.CharField(max_length=264)
     date = models.DateField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    img_rel_url = models.TextField()
+    img_url = models.TextField()
     content = models.TextField()
     validated = models.BooleanField(default=False)
 
