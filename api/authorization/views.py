@@ -10,6 +10,20 @@ from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
+@api_view(['GET'])
+def authorizationOverview(request):
+    authorization_urls = {
+        'Authorization': {
+            'Login': '/authorization/login/',
+            'Logout': '/authorization/logout/ [AUTHENTICATION REQUIRED]',
+            'User List': '/authorization/user-list/',
+            'User Detail' : '/authorization/user-detail/<str:username>/',
+            'Change Password': '/authorization/change-password/<str:username>/ [AUTHENTICATION REQUIRED]'
+        }
+    }
+
+    return Response(authorization_urls)
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def userLogout(request):

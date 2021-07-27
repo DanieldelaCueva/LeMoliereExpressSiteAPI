@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -25,11 +26,11 @@ def apiOverview(request):
         },
 
         'Docs' : {
-            'Main': '/docs/'
+            'Postman documentation': '/docs/'
         }
     }
 
     return Response(api_urls)
 
 def docsView(request):
-    return render(request, 'docs/index.html')
+    return HttpResponseRedirect("https://documenter.getpostman.com/view/16803336/TzsbMTu1")

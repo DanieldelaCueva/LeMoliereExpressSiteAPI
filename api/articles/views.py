@@ -10,6 +10,22 @@ import wget
 import os
 # Create your views here.
 
+@api_view(['GET'])
+def articlesOverview(request):
+    articles_urls = {
+        'Articles': {
+            'Create': '/articles/article-create/ [AUTHENTICATION REQUIRED]',
+            'List': '/articles/article-list/',
+            'Detail': '/articles/article-detail/<int:pk>/',
+            'Update': '/articles/article-update/<int:pk>/ [AUTHENTICATION REQUIRED]',
+            'Delete': '/articles/article-delete/<int:pk>/ [AUTHENTICATION REQUIRED]',
+            'Validate': '/articles/article-validate/<int:pk>/ [AUTHENTICATION REQUIRED]',
+            'Invalidate': '/articles/article-invalidate/<int:pk>/ [AUTHENTICATION REQUIRED]'
+        }
+    }
+
+    return Response(articles_urls)
+
 
 @api_view(['GET'])
 def articleList(request):
