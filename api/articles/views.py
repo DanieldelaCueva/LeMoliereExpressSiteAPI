@@ -1,5 +1,5 @@
-from .serializers import ArticleSerializer
-from .models import Article
+from .serializers import ArticleSerializer, EditionSerializer
+from .models import Article, Edition
 from django.contrib.auth.decorators import login_required
 
 from rest_framework.decorators import api_view, permission_classes
@@ -15,12 +15,15 @@ def articlesOverview(request):
     articles_urls = {
         'Articles': {
             'Create': '/articles/article-create/ [AUTHENTICATION REQUIRED]',
-            'List': '/articles/article-list/',
-            'Detail': '/articles/article-detail/<int:pk>/',
+            'List': '/articles/all-article-list/',
+            'Detail': '/articles/all-article-detail/<int:pk>/',
+            'List (validated)': '/articles/validated-article-list/',
+            'Detail (validated)': '/articles/validated-article-detail/<int:pk>/',
             'Update': '/articles/article-update/<int:pk>/ [AUTHENTICATION REQUIRED]',
             'Delete': '/articles/article-delete/<int:pk>/ [AUTHENTICATION REQUIRED]',
             'Validate': '/articles/article-validate/<int:pk>/ [AUTHENTICATION REQUIRED]',
-            'Invalidate': '/articles/article-invalidate/<int:pk>/ [AUTHENTICATION REQUIRED]'
+            'Invalidate': '/articles/article-invalidate/<int:pk>/ [AUTHENTICATION REQUIRED]',
+            'Editions List': '/articles/editions-list'
         }
     }
 
@@ -28,33 +31,37 @@ def articlesOverview(request):
 
 
 @api_view(['GET'])
-def articleList(request):
+def allArticleList(request):
     articles = Article.objects.all()
     serializer = ArticleSerializer(articles, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def articleDetail(request, pk):
+def validatedArticleList(request):
+    articles = Article.objects.filter(validated=True)
+    serializer = ArticleSerializer(articles, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def allArticleDetail(request, pk):
     articles = Article.objects.get(id=pk)
     serializer = ArticleSerializer(articles, many=False)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def validatedArticleDetail(request, pk):
+    articles = Article.objects.get(id=pk)
+    serializer = ArticleSerializer(articles, many=False)
+    if serializer.data['validated'] == True:
+        return Response(serializer.data)
+    else:
+        return Response("Article not validated")
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def articleCreate(request):
     serializer = ArticleSerializer(data=request.data)
     if serializer.is_valid():
-
-        # url = serializer.validated_data['img_rel_url']
-        # img_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/media'
-        # wget.download(url,out = img_path)
-        # system_path = os.path.join(img_path, os.path.split(url)[1])
-        # init_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        # relative_path = os.path.relpath(system_path, init_path)
-
-        # serializer.validated_data['img_rel_url'] = relative_path
-
         serializer.save()
         return Response(serializer.data)
     else:
@@ -103,3 +110,9 @@ def articleInvalidate(request, pk):
         serializer2.validated_data['validated'] = False
         serializer2.save()
     return Response(serializer2.data)
+
+@api_view(['GET'])
+def editionsList(request):
+    editions = Edition.objects.all()
+    serializer = EditionSerializer(editions, many=True)
+    return Response(serializer.data)

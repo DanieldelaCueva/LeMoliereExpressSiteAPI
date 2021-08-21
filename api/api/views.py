@@ -9,12 +9,15 @@ def apiOverview(request):
     api_urls = {
         'Articles': {
             'Create': '/articles/article-create/ [AUTHENTICATION REQUIRED]',
-            'List': '/articles/article-list/',
-            'Detail': '/articles/article-detail/<int:pk>/',
+            'List': '/articles/all-article-list/',
+            'Detail': '/articles/all-article-detail/<int:pk>/',
+            'List (validated)': '/articles/validated-article-list/',
+            'Detail (validated)': '/articles/validated-article-detail/<int:pk>/',
             'Update': '/articles/article-update/<int:pk>/ [AUTHENTICATION REQUIRED]',
             'Delete': '/articles/article-delete/<int:pk>/ [AUTHENTICATION REQUIRED]',
             'Validate': '/articles/article-validate/<int:pk>/ [AUTHENTICATION REQUIRED]',
-            'Invalidate': '/articles/article-invalidate/<int:pk>/ [AUTHENTICATION REQUIRED]'
+            'Invalidate': '/articles/article-invalidate/<int:pk>/ [AUTHENTICATION REQUIRED]',
+            'Editions List': '/articles/editions-list'
         },
 
         'Authorization': {
