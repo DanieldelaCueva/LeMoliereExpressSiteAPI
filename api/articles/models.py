@@ -1,10 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
+import uuid
 
 # Create your models here.
 
 class Article(models.Model):
-    id = models.IntegerField(primary_key=True, unique=True)
+    id = models.CharField(max_length=264, primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=264)
     date = models.DateField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
