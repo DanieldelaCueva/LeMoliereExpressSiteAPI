@@ -130,15 +130,14 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = '/autorization/login'
 
-
-# Provisional for debug proposes
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-    ],
-    # 'DEFAULT_PERMISSION_CLASSES' : [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ]
+    ]
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'https://me-website-f5113.web.app',
+    'https://me-website-f5113.firebaseapp.com',
+    'http://127.0.0.1:8000'
+]
