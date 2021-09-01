@@ -57,6 +57,7 @@ def userDetail(request, username):
     userSerializer_data = userSerializer.data
     userSerializer_data['group'] = userDataSerializer.data['group']
     userSerializer_data['age_class'] = userDataSerializer.data['age_class']
+    userSerializer_data['is_coordinator'] = userDataSerializer.data['is_coordinator']
     return Response(userSerializer_data)
 
 

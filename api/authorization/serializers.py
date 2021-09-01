@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
-        fields = ['age_class', 'group']
+        fields = ['age_class', 'group', 'is_coordinator',]
 
 class PasswordSerializer(serializers.ModelSerializer):
     class Meta:

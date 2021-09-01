@@ -1,0 +1,11 @@
+En el server:
+git config --global user.name "DanieldelaCueva"
+git commit -m "Database from server"
+git add api/db.sqlite3
+git push origin token-authentication
+contra: token
+
+
+En mi ordenador:
+git fetch --no-tags
+git pull --no-tags
