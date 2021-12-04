@@ -7,6 +7,7 @@ app_name = 'authorization'
 urlpatterns = [
     path('', views.authorizationOverview, name='authorization-overview'),
     path('login/', auth_views.obtain_auth_token, name='login'),
+    path('check-login/<str:username>', views.checkIfLoggedIn, name='check-login'),
     path('logout/', views.userLogout, name='logout'),
     path('user-detail/<str:username>', views.userDetail, name='user-detail'),
     path('user-list/', views.userList, name='user-list'),

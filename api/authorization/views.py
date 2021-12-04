@@ -24,6 +24,20 @@ def authorizationOverview(request):
 
     return Response(authorization_urls)
 
+@api_view(['GET'])
+def checkIfLoggedIn(request, username):
+    user = User.objects.get(username=username)
+    userSerializer = UserSerializer(user, many=False)
+    id = userSerializer.data['id']
+    try:
+        key = Token.objects.get(user=id)
+        return Response(str(key))
+    except Token.DoesNotExist:
+        return Response("false")
+    
+        
+
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def userLogout(request):
