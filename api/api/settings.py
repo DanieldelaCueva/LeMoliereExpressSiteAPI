@@ -25,9 +25,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = ')*-lawl&%g)rher#4f5oc5p4!!+sbk*qms%xnzb%t^*r1a@@x_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'moliereexpressapi.pythonanywhere.com'
+    ]
 
 
 # Application definition
@@ -136,4 +138,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'https://molierexpress.com',
+    'https://app.molierexpress.com'
+    ]
