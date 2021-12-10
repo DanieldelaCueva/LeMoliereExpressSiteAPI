@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 import uuid
 
 # Create your models here.
@@ -10,7 +10,7 @@ class Article(models.Model):
     date = models.DateField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     author = models.CharField(max_length=264, default="User")
-    group = models.CharField(max_length=264, default="Collaborations externes")
+    group = models.ForeignKey(Group, to_field="name", on_delete=models.CASCADE)
     img_url = models.TextField()
     content = models.TextField()
     language = models.CharField(max_length=264, default="Français")
