@@ -44,12 +44,13 @@ def validatedArticleList(request):
 def validatedLastArticles(request, N):
     articles = Article.objects.filter(validated=True)
     serializer = ArticleSerializer(articles, many=True)
-    response = []
-    print(len(serializer.data))
-    for i in range(len(serializer.data)-1, len(serializer.data)-N-1, -1):
-        print(serializer.data[i])
-        response.append(serializer.data[i])
-    return Response(response)
+    if N >= len(serializer.data):
+        return Response(serializer.data)
+    else:
+        response = []
+        for i in range(len(serializer.data)-1, len(serializer.data)-N-1, -1):
+            response.append(serializer.data[i])
+        return Response(response)
 
 @api_view(['GET'])
 def allArticleDetail(request, pk):
