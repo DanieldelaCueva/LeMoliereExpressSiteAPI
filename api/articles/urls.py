@@ -8,6 +8,7 @@ urlpatterns = [
     path('all-article-list/', views.allArticleList, name='all-article-list'),
     path('all-article-detail/<str:pk>/', views.allArticleDetail, name='all-article-detail'),
     path('validated-article-list/', views.validatedArticleList, name='validated-article-list'),
+    path('validated-last-articles/<int:N>', views.validatedLastArticles, name='validated-last-articles'),
     path('validated-article-detail/<str:pk>/', views.validatedArticleDetail, name='validated-article-detail'),
     path('article-create', views.articleCreate, name='article-create'),
     path('article-update/<str:pk>/', views.articleUpdate, name='article-update'),

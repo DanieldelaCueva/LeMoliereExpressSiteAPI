@@ -5,9 +5,6 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-
-import wget
-import os
 # Create your views here.
 
 @api_view(['GET'])
@@ -19,6 +16,7 @@ def articlesOverview(request):
             'Detail': '/articles/all-article-detail/<int:pk>/',
             'List (validated)': '/articles/validated-article-list/',
             'Detail (validated)': '/articles/validated-article-detail/<int:pk>/',
+            'N last articles': 'validated-last-articles/<int:N>',
             'Update': '/articles/article-update/<int:pk>/ [AUTHENTICATION REQUIRED]',
             'Delete': '/articles/article-delete/<int:pk>/ [AUTHENTICATION REQUIRED]',
             'Validate': '/articles/article-validate/<int:pk>/ [AUTHENTICATION REQUIRED]',
@@ -41,6 +39,17 @@ def validatedArticleList(request):
     articles = Article.objects.filter(validated=True)
     serializer = ArticleSerializer(articles, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def validatedLastArticles(request, N):
+    articles = Article.objects.filter(validated=True)
+    serializer = ArticleSerializer(articles, many=True)
+    response = []
+    print(len(serializer.data))
+    for i in range(len(serializer.data)-1, len(serializer.data)-N-1, -1):
+        print(serializer.data[i])
+        response.append(serializer.data[i])
+    return Response(response)
 
 @api_view(['GET'])
 def allArticleDetail(request, pk):
