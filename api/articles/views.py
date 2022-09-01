@@ -45,7 +45,10 @@ def validatedLastArticles(request, N):
     articles = Article.objects.filter(validated=True)
     serializer = ArticleSerializer(articles, many=True)
     if N >= len(serializer.data):
-        return Response(serializer.data)
+        response = []
+        for i in range(len(serializer.data)-1, 0,-1):
+            response.append(serializer.data[i])
+        return Response(response)
     else:
         response = []
         for i in range(len(serializer.data)-1, len(serializer.data)-N-1, -1):
